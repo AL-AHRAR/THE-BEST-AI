@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة AL-AHRAR للمحادثة الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- كود CSS المدمج هنا --- */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #111827;
+            /* Deep dark background */
+            color: #fff;
+            align-items: center;
+            position: relative;
+            padding-bottom: 20px;
+            font-family: 'Cairo', sans-serif;
+            /* Modern Arabic font */
+            direction: rtl;
+            /* إضافة اتجاه RTL للجسم */
+            text-align: right;
+            /* محاذاة النص الافتراضية إلى اليمين للجسم */
+        }
+
+        /* Enhanced Chat Container */
+        .container_chat_bot {
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            width: 100%;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .container_chat_bot .container-chat-options {
+            position: relative;
+            display: flex;
+            background: linear-gradient(145deg, #374151, #1f2937);
+            box-shadow: 10px 10px 19px #171d26, -10px -10px 19px #2b3548;
+            border-radius: 20px;
+            padding: 1.5px;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .container_chat_bot .container-chat-options .chat {
+            display: flex;
+            flex-direction: column;
+            background-color: #1f2937;
+            border-radius: 19px;
+            width: 100%;
+            overflow: hidden;
+            padding-top: 0;
+        }
+
+        .container_chat_bot .container-chat-options .chat .chat-bot {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding-top: 0;
+        }
+
+        .container_chat_bot .chat .chat-bot textarea {
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            height: auto;
+            min-height: 120px;
+            color: #f3f4f6;
+            font-family: 'Cairo', sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 15px;
+            resize: vertical;
+            outline: none;
+            overflow: hidden;
+            border-radius: 20px;
+            text-align: right;
+            /* محاذاة النص في مربع النص إلى اليمين */
+        }
+
+        .container_chat_bot .chat .chat-bot textarea::placeholder {
+            color: #6b7280;
+            opacity: 0.8;
+        }
+
+
+        .container_chat_bot .chat .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+        }
+
+        .container_chat_bot .chat .options .btns-add {
+            display: flex;
+            gap: 10px;
+            /* flex-direction: row-reverse; /* إذا كنت تريد عكس ترتيب الأزرار */
+        }
+
+        .container_chat_bot .chat .options .btns-add button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .container_chat_bot .chat .options .btns-add button:hover {
+            color: #d1d5db;
+            transform: scale(1.1);
+        }
+
+        .container_chat_bot .chat .options .btn-submit {
+            display: flex;
+            padding: 10px 15px;
+            background-color: #4ade80;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .container_chat_bot .chat .options .btn-submit:hover {
+            background-color: #22c55e;
+            transform: scale(1.05);
+        }
+
+        .container_chat_bot .chat .options .btn-submit i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            color: #f9fafb;
+        }
+
+        .container_chat_bot .tags {
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            color: #d1d5db;
+            font-size: 14px;
+            gap: 8px;
+        }
+
+        .container_chat_bot .tags span {
+            padding: 8px 16px;
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 15px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container_chat_bot .tags span:hover {
+            background-color: #4b5563;
+            color: #f9fafb;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
+            /* تعديل: محاذاة العناصر إلى اليمين في وضع RTL */
+            color: #f3f4f6;
+            padding-top: 20px;
+            padding-right: 30px;
+            padding-left: 30px;
+            padding-bottom: 30px;
+            overflow-y: auto;
+            max-height: 500px;
+            width: 100%;
+            max-width: 85%;
+            text-align: right;
+            /* محاذاة النص في main إلى اليمين */
+        }
+
+        /* Success Alert - Modern Style */
+        .success-alert {
+            position: absolute;
+            top: 3rem;
+            left: auto;
+            /* تعديل: إلغاء تحديد اليسار */
+            right: 50%;
+            /* تعديل: تحديد اليمين بدلاً من اليسار */
+            transform: translateX(50%);
+            /* تعديل: عكس التحويل */
+            display: none;
+            opacity: 0;
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            z-index: 50;
+            background-color: #22c55e;
+            color: #f9fafb;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-alert.show {
+            display: flex;
+            transform: translate(50%, 0);
+            /* تعديل: عكس التحويل */
+            opacity: 1;
+        }
+
+        .success-alert i {
+            margin-left: 10px;
+            /* تعديل: تغيير الهامش إلى اليسار */
+            margin-right: 0;
+            /* تعديل: إزالة الهامش الأيمن */
+            font-size: 1.2em;
+        }
+
+        /* Model Info Button - Refined */
+        .button-message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            /* تعديل: تحديد اليمين بدلاً من اليسار */
+            left: auto;
+            /* تعديل: إلغاء تحديد اليسار */
+            z-index: 100;
+        }
+
+        #btn-message {
+            --text-color: rgb(255, 255, 255);
+            --bg-color-sup: #71717a;
+            --bg-color: #374151;
+            --bg-hover-color: #4b5563;
+            --online-status: #4ade80;
+            --font-size: 16px;
+            --btn-transition: all 0.2s ease-out;
+        }
+
+        .button-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font: 500 var(--font-size) 'Cairo', sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+            background-color: var(--bg-color);
+            border-radius: 75px;
+            cursor: pointer;
+            padding: 8px 8px 8px 15px;
+            /* تعديل: عكس ترتيب الحواشي */
+            width: fit-content;
+            height: 45px;
+            border: none;
+            overflow: hidden;
+            transition: var(--btn-transition);
+            flex-direction: row-reverse;
+            /* تعديل: عكس اتجاه العناصر داخل الزر */
+        }
+
+        .button-message:hover {
+            height: 60px;
+            padding: 10px 10px 10px 25px;
+            /* تعديل: عكس ترتيب الحواشي */
+            background-color: var(--bg-hover-color);
+            box-shadow: 0 7px 18px rgba(0, 0, 0, .3);
+            transform: translateY(-2px);
+        }
+
+        .button-message:active {
+            transform: scale(0.98);
+        }
+
+        .content-avatar {
+            width: 35px;
+            height: 35px;
+            margin: 0;
+            transition: var(--btn-transition);
+            position: relative;
+        }
+
+        .button-message:hover .content-avatar {
+            width: 45px;
+            height: 45px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--bg-color-sup);
+        }
+
+        .user-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-user {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            left: 2px;
+            /* تعديل: تحديد اليسار بدلاً من اليمين */
+            right: auto;
+            /* تعديل: إلغاء تحديد اليمين */
+            bottom: 2px;
+            border-radius: 50%;
+            outline: solid 2px var(--bg-color);
+            background-color: var(--online-status);
+            transition: var(--btn-transition);
+            animation: active-status 2s ease-in-out infinite;
+        }
+
+        .button-message:hover .status-user {
+            width: 12px;
+            height: 12px;
+            left: 2px;
+            /* تعديل: تحديد اليسار بدلاً من اليمين */
+            right: auto;
+            /* تعديل: إلغاء تحديد اليمين */
+            bottom: 2px;
+            outline: solid 3px var(--bg-hover-color);
+        }
+
+        .notice-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* تعديل: محاذاة العناصر إلى اليمين */
+            justify-content: center;
+            padding-right: 10px;
+            /* تعديل: تغيير الهامش إلى اليمين */
+            padding-left: 0;
+            /* تعديل: إزالة الهامش الأيسر */
+            text-align: initial;
+            color: var(--text-color);
+        }
+
+        .username {
+            letter-spacing: -5px;
+            height: 0;
+            opacity: 0;
+            transform: translateY(-15px);
+            transition: var(--btn-transition);
+            font-size: 1.1em;
+        }
+
+        .user-id {
+            font-size: 13px;
+            letter-spacing: -5px;
+            height: 0;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: var(--btn-transition);
+            color: #9ca3af;
+        }
+
+        .lable-message {
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            transform: scaleY(1);
+            transition: var(--btn-transition);
+            font-size: 0.95em;
+        }
+
+        .button-message:hover .username {
+            height: auto;
+            letter-spacing: normal;
+            opacity: 1;
+            transform: translateY(0);
+            transition: var(--btn-transition);
+        }
+
+        .button-message:hover .user-id {
+            height: auto;
+            letter-spacing: normal;
+            opacity: 1;
+            transform: translateY(0);
+            transition: var(--btn-transition);
+        }
+
+        .button-message:hover .lable-message {
+            height: 0;
+            transform: scaleY(0);
+            transition: var(--btn-transition);
+        }
+
+        .lable-message,
+        .username {
+            font-weight: 600;
+        }
+
+        .number-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-right: 10px;
+            /* تعديل: تغيير الهامش إلى اليمين */
+            margin-left: 0;
+            /* تعديل: إزالة الهامش الأيسر */
+            font-size: 13px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--bg-color-sup);
+            border-radius: 20px;
+            color: #f9fafb;
+        }
+
+        /* Active Status Animation */
+        @keyframes active-status {
+            0% {
+                background-color: var(--online-status);
+            }
+
+            33.33% {
+                background-color: #7dd3fc;
+            }
+
+            66.33% {
+                background-color: #7dd3fc;
+            }
+
+            100% {
+                background-color: var(--online-status);
+            }
+        }
+
+        /* Model Info Modal - Enhanced */
+        #model-info {
+            position: fixed;
+            z-index: 1000;
+            left: auto;
+            /* تعديل: إلغاء تحديد اليسار */
+            right: 0;
+            /* تعديل: تحديد اليمين بدلاً من اليسار */
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(17, 24, 39, 0.8);
+            display: none;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            /* محاذاة النص في المودل إلى اليمين */
+        }
+
+        .model-content {
+            background-color: #2b3440;
+            color: #f9fafb;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+
+        .close {
+            color: #9ca3af;
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            /* تعديل: تحديد اليسار بدلاً من اليمين */
+            right: auto;
+            /* تعديل: إلغاء تحديد اليمين */
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #d1d5db;
+            text-decoration: none;
+        }
+
+        #model-info p {
+            line-height: 2.0;
+            font-size: 1.15em;
+            margin-bottom: 30px;
+            color: #d1d5db;
+        }
+
+        #model-info button {
+            background-color: #6ee7b7;
+            color: #111827;
+            border: none;
+            padding: 14px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #model-info button:hover {
+            background-color: #34d399;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Message Styles - Refined */
+        .user-message {
+            background-color: #4b5563;
+            color: #f9fafb;
+            align-self: flex-start;
+            /* تعديل: تبدأ من اليمين في وضع RTL */
+            align-self: flex-end;
+            /* Original value, should be fine in RTL */
+            border-radius: 20px 8px 20px 20px;
+            /* Keep the radius as is, it will flip correctly in RTL */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-right: auto;
+            /* تعديل: الهامش الأيمن تلقائي */
+            margin-left: 15px;
+            /* تعديل: هامش أيسر */
+            margin-right: 15px;
+            /* Original value - redundant, remove or keep 15px left margin */
+            font-weight: 500;
+        }
+
+        .bot-message {
+            background-color: #374151;
+            color: #d1d5db;
+            align-self: flex-end;
+            /* تعديل: تبدأ من اليسار في وضع RTL */
+            align-self: flex-start;
+            /* Original value, should be fine in RTL */
+            border-radius: 8px 20px 20px 20px;
+            /* Keep the radius as is, it will flip correctly in RTL */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-left: auto;
+            /* تعديل: الهامش الأيسر تلقائي */
+            margin-right: 15px;
+            /* تعديل: هامش أيمن */
+            margin-left: 15px;
+            /* Original value - redundant, remove or keep 15px right margin */
+            font-weight: 500;
+        }
+
+
+        .message {
+            margin-bottom: 12px;
+            padding: 14px 20px;
+            font-size: 1.15em;
+            line-height: 1.7;
+            text-align: right;
+            /* محاذاة النص داخل الرسالة إلى اليمين */
+        }
+
+        /* أنماط رسائل التفكير */
+        .thinking-message {
+            background-color: #4b426d;
+            color: #a8b3cf;
+            border-right: 4px solid #6ee7b7;
+            /* تعديل: الخط الحدودي على اليمين */
+            border-left: none;
+            /* تعديل: إزالة الخط الحدودي على اليسار */
+            border-radius: 15px 8px 8px 15px;
+            /* Keep radius as is, it flips correctly */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin-right: 30px;
+            /* تعديل: الهامش الأيمن */
+            margin-left: 15px;
+            margin-left: 0;
+            /* Redundant, remove or keep 30px right margin */
+            align-self: flex-start;
+        }
+
+        .thinking-message .message {
+            padding: 14px 20px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            font-style: italic;
+            color: #d1d5db;
+        }
+
+        /* --- أنماط CSS للعناوين HTML - مُحسَّنة --- */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: bold;
+            margin-top: 1.7em;
+            /* زيادة المساحة العلوية قليلاً */
+            margin-bottom: 0.6em;
+            /* زيادة المساحة السفلية قليلاً */
+            line-height: 1.4;
+            /* زيادة ارتفاع السطر قليلاً */
+            color: #6ee7b7;
+            text-align: right;
+            /* إضافة هامش أيمن لتمييز العناوين أكثر */
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 2.4em;
+            /* زيادة حجم خط h1 */
+            border-bottom: 3px solid #6ee7b7;
+            /* زيادة سمك الخط السفلي لـ h1 */
+            padding-bottom: 0.4em;
+            /* زيادة المساحة أسفل الخط السفلي */
+        }
+
+        h2 {
+            font-size: 2.0em;
+            /* زيادة حجم خط h2 */
+            border-bottom: 2px solid #6ee7b7;
+            /* زيادة سمك الخط السفلي لـ h2 */
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            /* زيادة حجم خط h3 */
+            /* إضافة خط سفلي منقط لـ h3 لتمييزه */
+            border-bottom: 1px dashed #6ee7b7;
+            padding-bottom: 0.2em;
+        }
+
+        h4 {
+            font-size: 1.5em;
+            /* زيادة حجم خط h4 قليلاً */
+            color: #86efac;
+            /* إضافة خلفية بسيطة للعناوين h4 */
+            background-color: rgba(134, 239, 172, 0.05);
+            /* لون أخضر فاتح جداً وشفاف */
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        h5 {
+            font-size: 1.3em;
+            /* زيادة حجم خط h5 قليلاً */
+            color: #a7f3d0;
+            font-style: italic;
+            /* إضافة خط أيمن جانبي لـ h5 */
+            border-right: 5px solid #a7f3d0;
+            padding-right: 10px;
+        }
+
+        h6 {
+            font-size: 1.1em;
+            /* زيادة حجم خط h6 قليلاً */
+            color: #bfede0;
+            font-style: italic;
+            /* إضافة خط سفلي رفيع جداً لـ h6 */
+            border-bottom: 1px dotted #bfede0;
+            padding-bottom: 0.1em;
+        }
+
+        /* --- تخصيص شكل المرر (Scrollbar) --- */
+
+        /* تتبع المرر بالكامل (the track) */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: #2b3440;
+        }
+
+        /* مقبض المرر (the thumb) */
+        ::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        /* المقبض عند التمرير النشط (hover state) */
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #6b7280;
+        }
+
+        /* زوايا المرر (buttons at the ends - optional, we are hiding them) */
+        ::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        /* المنطقة التي يتم سحب المقبض عليها (resizer - rarely used, can be hidden) */
+        ::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+
+        /* --- مؤشر الكتابة (Typing Cursor) --- */
+        .message::after,
+        .thinking-message::after {
+            content: ''; /* إزالة المؤشر تمامًا */
+        }
+
+
+          /* --- أنماط CSS مخصصة لعناصر الكود - مُحسَّنة (ألوان دافئة) --- */
+pre code {
+    display: block;
+    background: #3B3838; /* رمادي فحمي دافئ */
+    color: #F0E68C; /* ذهبي شاحب */
+    padding: 12px 15px;
+    border-radius: 7px;
+    overflow-x: auto;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace; /* خط Roboto Mono بديل */
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    position: relative; /* لجعل الزر نسبيًا لهذا العنصر */
+}
+
+/* --- CSS لزر نسخ الكود (من Uiverse.io by axy1976) --- */
+/* tooltip settings 👇 */
+
+.btn-copy {
+    /* button */
+    --button-bg: #353434;
+    --button-hover-bg: #464646;
+    --button-text-color: #cccccc;
+    --button-hover-text-color: #8bb9fe;
+    --button-border-radius: 10px;
+    --button-diameter: 36px;
+    --button-outline-width: 1px;
+    --button-outline-color: rgb(141, 141, 141);
+    /* tooltip */
+    --tooltip-bg: #f4f3f3;
+    --toolptip-border-radius: 4px;
+    --tooltip-font-family: Menlo, Roboto Mono, monospace;
+    /* 👆 this field should not be empty */
+    --tooltip-font-size: 12px;
+    /* 👆 this field should not be empty */
+    --tootip-text-color: rgb(50, 50, 50);
+    --tooltip-padding-x: 7px;
+    --tooltip-padding-y: 7px;
+    --tooltip-offset: 8px;
+    /* --tooltip-transition-duration: 0.3s; */
+    /* 👆 if you need a transition,
+    just remove the comment,
+    but I didn't like the transition :| */
+}
+
+.btn-copy {
+    box-sizing: border-box;
+    width: var(--button-diameter);
+    height: var(--button-diameter);
+    border-radius: var(--button-border-radius);
+    background-color: var(--button-bg);
+    color: var(--button-text-color);
+    border: none;
+    cursor: pointer;
+    position: absolute; /* تم التعديل إلى absolute ليتم وضعه فوق الكود */
+    top: 10px;         /* تعديل الموضع الرأسي */
+    left: 10px;        /* تعديل الموضع الأفقي ليصبح من اليمين في RTL */
+    outline: none;
+    direction: ltr; /* مهم لعرض الزر من اليسار لليمين حتى في صفحة RTL */
+}
+
+.btn-copy > .cp-tooltip {
+    position: absolute;
+    opacity: 0;
+    visibility: 0;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font: var(--tooltip-font-size) var(--tooltip-font-family);
+    color: var(--tootip-text-color);
+    background: var(--tooltip-bg);
+    padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+    border-radius: var(--toolptip-border-radius);
+    pointer-events: none;
+    transition: all var(--tooltip-transition-duration)
+        cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.btn-copy > .cp-tooltip::before {
+    content: attr(data-text-initial);
+}
+
+.btn-copy > .cp-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: calc(var(--tooltip-padding-y) / 2 * -1);
+    width: var(--tooltip-padding-y);
+    height: var(--tooltip-padding-y);
+    background: inherit;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    z-index: -999;
+    pointer-events: none;
+}
+
+.btn-copy svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cp-check-mark {
+    display: none;
+}
+
+/* actions */
+
+.btn-copy:hover .cp-tooltip,
+.btn-copy:focus:not(:focus-visible) .cp-tooltip {
+    opacity: 1;
+    visibility: visible;
+    top: calc((100% + var(--tooltip-offset)) * -1);
+}
+
+.btn-copy:focus:not(:focus-visible) .cp-tooltip::before {
+    content: attr(data-text-end);
+}
+
+.btn-copy:focus:not(:focus-visible) .cp-clipboard {
+    display: none;
+}
+
+.btn-copy:focus:not(:focus-visible) .cp-check-mark {
+    display: block;
+}
+
+.btn-copy:hover,
+.btn-copy:focus {
+    background-color: var(--button-hover-bg);
+}
+
+.btn-copy:active {
+    outline: var(--button-outline-width) solid var(--button-outline-color);
+}
+
+.btn-copy:hover svg {
+    color: var(--button-hover-text-color);
+}
+
+/* ... أنماط CSS الأخرى ... */
+
+.enhanced-heading h1,
+.enhanced-heading h2,
+.enhanced-heading h3,
+.enhanced-heading h4,
+.enhanced-heading h5,
+.enhanced-heading h6 {
+    /* يمكنك هنا إعادة تعريف أو تعديل أنماط العناوين لتكون "احترافية" أكثر */
+    font-weight: bold;
+    color: #6ee7b7; /* لون العنوان الرئيسي */
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+    text-align: right; /* تأكد من المحاذاة RTL إذا لزم الأمر */
+    margin-right: 10px; /* هامش أيمن بسيط */
+}
+
+.enhanced-heading h1 {
+    font-size: 2.2em;
+    border-bottom: 2px solid #6ee7b7; /* خط سفلي مميز */
+    padding-bottom: 0.3em;
+}
+
+.enhanced-heading h2 {
+    font-size: 1.9em;
+    border-bottom: 1px solid #6ee7b7;
+    padding-bottom: 0.2em;
+}
+
+.enhanced-heading h3 {
+    font-size: 1.7em;
+    /* لا يوجد خط سفلي افتراضي لـ h3 في هذا المثال، يمكنك إضافته إذا أردت */
+}
+
+/* يمكنك إضافة أنماط CSS إضافية لـ h4, h5, h6 حسب الحاجة */
+    </style>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.css">
+</head>
+
+<body>
+    <main>
+        <p style="margin-bottom: 20px; font-size: 1.2em; color: #9ca3af;">ابدأ محادثتك الآن واكتشف قوة الذكاء الاصطناعي</p>
+        <!-- Messages will be appended here in main -->
+    </main>
+
+    <!-- Model Info Button Container -->
+    <div class="button-message-container">
+        <button id="btn-message" class="button-message">
+            <div class="content-avatar">
+                <div class="status-user"></div>
+                <div class="avatar">
+                    <svg class="user-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12,12.5c-3.04,0-5.5,1.73-5.5,3.5s2.46,3.5,5.5,3.5,5.5-1.73,5.5-3.5-2.46-3.5-5.5-3.5Zm0-.5c1.66,0,3-1.34,3-3s-1.34-3-3-3-3,1.34-3,3,1.34,3,3,3Z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="notice-content">
+                <div class="username">AL-AHRAR</div>
+                <div class="lable-message">معلومات النموذج:
+                </div>
+                <div class="user-id">نسخة تجريبية V2</div>
+            </div>
+        </button>
+    </div>
+
+    <!-- Model Info Modal -->
+    <div id="model-info" class="model">
+        <div class="model-content">
+            <span class="close">×</span>
+            <p> اسم النموذج: <b style="color:#6ee7b7;">AL-AHRAR V2</b> <br>
+                مدعوم من AlA7r4r، مع لمسة إبداعية من الإنترنت لمساعدة البشر على الإبداع والابتكار. 🦾 💪 . </p>
+
+            <button onclick="document.getElementById('model-info').style.display='none'">إغلاق</button>
+
+        </div>
+    </div>
+
+    <div style="margin-top: auto;">
+        <!-- Pushes chat container to the bottom -->
+    </div>
+
+    <!-- Success Message Alert -->
+    <div class="success-alert flex items-center font-bold text-white shadow-md" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>
+        <div>
+            <p class="font-bold">تم الإرسال بنجاح!</p>
+            <p class="text-sm">تم إرسال رسالتك إلى بوت الذكاء الاصطناعي.</p>
+        </div>
+    </div>
+
+    <div class="container_chat_bot">
+        <div class="container-chat-options">
+            <div class="chat">
+                <div class="chat-bot">
+                    <textarea id="chat_bot" name="chat_bot" placeholder="✦˚ تخيَّل شيئًا واكتبه هنا..."></textarea>
+                </div>
+                <div class="options">
+                    <div class="btns-add">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm0-8h6m-3-3v6"
+                                    stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+                                    stroke="currentColor" fill="none" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10m-2.29-2.333A17.9 17.9 0 0 1 8.027 13H4.062a8.01 8.01 0 0 0 5.648 6.667M10.03 13c.151 2.439.848 4.73 1.97 6.752A15.9 15.9 0 0 0 13.97 13zm9.908 0h-3.965a17.9 17.9 0 0 1-1.683 6.667A8.01 8.01 0 0 0 19.938 13M4.062 11h3.965A17.9 17.9 0 0 1 9.71 4.333A8.01 8.01 0 0 0 4.062 11m5.969 0h3.938A15.9 15.9 0 0 0 12 4.248A15.9 15.9 0 0 0 10.03 11m4.259-6.667A17.9 17.9 0 0 1 15.973 11h3.965a8.01 8.01 0 0 0-5.648-6.667"
+                                    fill="currentColor" />
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn-submit">
+                        <i>
+                            <svg viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M473 39.05a24 24 0 0 0-25.5-5.46L47.47 185h-.08a24 24 0 0 0 1 45.16l.41.13l137.3 58.63a16 16 0 0 0 15.54-3.59L422 80a7.07 7.07 0 0 1 10 10L226.66 310.26a16 16 0 0 0-3.59 15.54l58.65 137.38c.06.2.12.38.19.57c3.2 9.27 11.3 15.81 21.09 16.25h1a24.63 24.63 0 0 0 23-15.46L478.39 64.62A24 24 0 0 0 473 39.05" />
+                            </svg>
+                        </i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tags">
+            <span>إنشاء صورة</span>
+            <span>تحليل البيانات</span>
+            <span>المزيد</span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
