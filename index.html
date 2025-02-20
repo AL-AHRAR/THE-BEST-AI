@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة AL-AHRAR للمحادثة الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css"> <!-- رابط لملف CSS الخارجي -->
+
+    <!-- تضمين مكتبة marked لتحويل Markdown إلى HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- تضمين مكتبة highlight.js لتمييز الأكواد البرمجية -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <!-- تضمين إضافة highlightjs-line-numbers.js لترقيم أسطر الأكواد -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.css">
+
+    <!-- تضمين مكتبة Gemini API مباشرة من CDN (تم استبدال importmap) -->
+    <script src="https://esm.run/@google/generative-ai"></script>
+
+</head>
+
+<body>
+
+    <!-- الشريط الجانبي -->
+    <aside id="sidebar" class="sidebar-container hidden">
+        <div class="sidebar-header">
+            <h2>المحادثات</h2>
+            <button id="new-chat-btn" class="new-chat-btn">
+                <i class="fas fa-plus"></i> جديد
+            </button>
+        </div>
+        <nav>
+            <ul class="conversations-list">
+                <li class="conversation-item active">محادثة اليوم</li>
+                <li class="conversation-item">ملخص اجتماع الفريق</li>
+                <li class="conversation-item">أفكار لمشروع جديد</li>
+                <li class="conversation-item">مسودة رسالة بريد إلكتروني للعميل</li>
+                <li class="conversation-item">ملاحظات حول جلسة العصف الذهني</li>
+                <li class="conversation-item">تحليل أولي لبيانات المبيعات</li>
+                <li class="conversation-item">محادثة حول استراتيجية التسويق</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="sidebar-hidden">
+        <p style="margin-bottom: 20px; font-size: 1.2em; color: #9ca3af;">ابدأ محادثتك الآن واكتشف قوة الذكاء الاصطناعي</p>
+        <!-- Messages will be appended here in main -->
+    </main>
+
+    <!-- Model Info Button Container -->
+    <div class="button-message-container">
+        <button id="btn-message" class="button-message">
+            <div class="content-avatar">
+                <div class="status-user"></div>
+                <div class="avatar">
+                    <svg class="user-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12,12.5c-3.04,0-5.5,1.73-5.5,3.5s2.46,3.5,5.5,3.5,5.5-1.73,5.5-3.5-2.46-3.5-5.5-3.5Zm0-.5c1.66,0,3-1.34,3-3s-1.34-3-3-3-3,1.34-3,3,1.34,3,3,3Z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="notice-content">
+                <div class="username">AL-AHRAR</div>
+                <div class="lable-message">معلومات النموذج:
+                </div>
+                <div class="user-id">نسخة تجريبية V2</div>
+            </div>
+        </button>
+    </div>
+
+    <!-- Model Info Modal -->
+    <div id="model-info" class="model">
+        <div class="model-content">
+            <span class="close">×</span>
+            <p> اسم النموذج: <b style="color:#6ee7b7;">AL-AHRAR V2</b> <br>
+                النموذج المستخدم: <b>gemini-2.0-flash</b> <br>
+                الحد الأقصى للرموز (Tokens): <b>2048</b> رمز  (قابل للتعديل) <br>
+                درجة الحرارة الافتراضية: <b>0.6</b> <br><br>
+                مدعوم من AlA7r4r، مع لمسة إبداعية من الإنترنت لمساعدة البشر على الإبداع والابتكار. 🦾 💪 . </p>
+
+            <button onclick="document.getElementById('model-info').style.display='none'">إغلاق</button>
+
+        </div>
+    </div>
+
+    <div style="margin-top: auto;">
+        <!-- Pushes chat container to the bottom -->
+    </div>
+
+    <!-- Success Message Alert -->
+    <div class="success-alert flex items-center font-bold text-white shadow-md" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>
+        <div>
+            <p class="font-bold">تم الإرسال بنجاح!</p>
+            <p class="text-sm">تم إرسال رسالتك إلى بوت الذكاء الاصطناعي.</p>
+        </div>
+    </div>
+
+    <div class="container_chat_bot">
+        <div class="container-chat-options" style="background: #374151; box-shadow: none;">
+            <div class="chat" style="background: #374151; border-radius: 25px;">
+                <div class="chat-bot">
+                    <div class="input-area" style="display: flex; align-items: center; padding: 10px;">
+
+                        <div id="image-preview-container" class="image-preview-container"> <!-- حاوية لمعاينة الصور -->
+                            <img id="image-preview" class="image-preview" src="" alt="" style="display: none;"> <!-- معاينة الصورة, مخفية افتراضياً -->
+                            <button id="delete-image-btn" class="delete-image-btn" style="display: none;" aria-label="حذف الصورة المرفقة"> <!-- زر حذف الصورة, مخفي افتراضياً -->
+                                <svg class="delete-image-icon" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <textarea id="chat_bot" name="chat_bot" placeholder="✦˚ تخيَّل شيئًا واكتبه هنا..."
+                            style="border-radius: 20px; border: none; padding: 12px 15px; margin: 0 10px; font-size: 16px; color: #d1d5db; background-color: #4b5563;"
+                            aria-label="✦˚ تخيَّل شيئًا واكتبه هنا..."></textarea>
+
+                        <div class="input-actions" style="display: flex; margin-right: 10px;">
+                            <input type="file" id="file-upload" style="display:none;" accept="image/*">
+                            <button id="attach-btn" class="attach-btn" aria-label="إرفاق ملف">
+                                <i class="fas fa-paperclip"></i>
+                                <span class="sr-only">إرفاق ملف</span>
+                            </button>
+                            <button class="btn-submit" aria-label="إرسال الرسالة">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="options" style="display:none;">
+                    <div class="btns-add">
+                        <!-- زر رفع الملفات (تم نقله بالفعل أعلاه) -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tags">
+            <span>إنشاء صورة</span>
+            <span>تحليل البيانات</span>
+            <span>المزيد</span>
+        </div>
+    </div>
+
+    <!-- زر الشريط الجانبي -->
+    <button id="sidebar-toggle-btn" class="sidebar-toggle-btn sidebar-hidden" aria-label="تبديل الشريط الجانبي">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- تضمين ملف الجافاسكربت كوحدة نمطية (type="module") -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
